@@ -17,6 +17,7 @@ import { Route as PatternsIndexRouteImport } from './routes/patterns/index'
 import { Route as FoundationsIndexRouteImport } from './routes/foundations/index'
 import { Route as PatternsToolUseRouteImport } from './routes/patterns/tool-use'
 import { Route as PatternsRagRouteImport } from './routes/patterns/rag'
+import { Route as PatternsGraphRagRouteImport } from './routes/patterns/graph-rag'
 import { Route as PatternsAgentsRouteImport } from './routes/patterns/agents'
 import { Route as FoundationsTokensRouteImport } from './routes/foundations/tokens'
 import { Route as FoundationsPromptingRouteImport } from './routes/foundations/prompting'
@@ -63,6 +64,11 @@ const PatternsRagRoute = PatternsRagRouteImport.update({
   path: '/rag',
   getParentRoute: () => PatternsRoute,
 } as any)
+const PatternsGraphRagRoute = PatternsGraphRagRouteImport.update({
+  id: '/graph-rag',
+  path: '/graph-rag',
+  getParentRoute: () => PatternsRoute,
+} as any)
 const PatternsAgentsRoute = PatternsAgentsRouteImport.update({
   id: '/agents',
   path: '/agents',
@@ -99,6 +105,7 @@ export interface FileRoutesByFullPath {
   '/foundations/prompting': typeof FoundationsPromptingRoute
   '/foundations/tokens': typeof FoundationsTokensRoute
   '/patterns/agents': typeof PatternsAgentsRoute
+  '/patterns/graph-rag': typeof PatternsGraphRagRoute
   '/patterns/rag': typeof PatternsRagRoute
   '/patterns/tool-use': typeof PatternsToolUseRoute
   '/foundations/': typeof FoundationsIndexRoute
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/foundations/prompting': typeof FoundationsPromptingRoute
   '/foundations/tokens': typeof FoundationsTokensRoute
   '/patterns/agents': typeof PatternsAgentsRoute
+  '/patterns/graph-rag': typeof PatternsGraphRagRoute
   '/patterns/rag': typeof PatternsRagRoute
   '/patterns/tool-use': typeof PatternsToolUseRoute
   '/foundations': typeof FoundationsIndexRoute
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   '/foundations/prompting': typeof FoundationsPromptingRoute
   '/foundations/tokens': typeof FoundationsTokensRoute
   '/patterns/agents': typeof PatternsAgentsRoute
+  '/patterns/graph-rag': typeof PatternsGraphRagRoute
   '/patterns/rag': typeof PatternsRagRoute
   '/patterns/tool-use': typeof PatternsToolUseRoute
   '/foundations/': typeof FoundationsIndexRoute
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/foundations/prompting'
     | '/foundations/tokens'
     | '/patterns/agents'
+    | '/patterns/graph-rag'
     | '/patterns/rag'
     | '/patterns/tool-use'
     | '/foundations/'
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/foundations/prompting'
     | '/foundations/tokens'
     | '/patterns/agents'
+    | '/patterns/graph-rag'
     | '/patterns/rag'
     | '/patterns/tool-use'
     | '/foundations'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/foundations/prompting'
     | '/foundations/tokens'
     | '/patterns/agents'
+    | '/patterns/graph-rag'
     | '/patterns/rag'
     | '/patterns/tool-use'
     | '/foundations/'
@@ -244,6 +256,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PatternsRagRouteImport
       parentRoute: typeof PatternsRoute
     }
+    '/patterns/graph-rag': {
+      id: '/patterns/graph-rag'
+      path: '/graph-rag'
+      fullPath: '/patterns/graph-rag'
+      preLoaderRoute: typeof PatternsGraphRagRouteImport
+      parentRoute: typeof PatternsRoute
+    }
     '/patterns/agents': {
       id: '/patterns/agents'
       path: '/agents'
@@ -304,6 +323,7 @@ const FoundationsRouteWithChildren = FoundationsRoute._addFileChildren(
 
 interface PatternsRouteChildren {
   PatternsAgentsRoute: typeof PatternsAgentsRoute
+  PatternsGraphRagRoute: typeof PatternsGraphRagRoute
   PatternsRagRoute: typeof PatternsRagRoute
   PatternsToolUseRoute: typeof PatternsToolUseRoute
   PatternsIndexRoute: typeof PatternsIndexRoute
@@ -311,6 +331,7 @@ interface PatternsRouteChildren {
 
 const PatternsRouteChildren: PatternsRouteChildren = {
   PatternsAgentsRoute: PatternsAgentsRoute,
+  PatternsGraphRagRoute: PatternsGraphRagRoute,
   PatternsRagRoute: PatternsRagRoute,
   PatternsToolUseRoute: PatternsToolUseRoute,
   PatternsIndexRoute: PatternsIndexRoute,

@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { ArrowLeft, Bot, Repeat, Cpu, Zap, Target } from 'lucide-react'
+import { ArrowLeft, Bot, Repeat, Cpu, Zap, Target, ArrowRight, Plane, Hotel, Map, Box, ShoppingCart, AlertCircle, CheckCircle2, Search } from 'lucide-react'
 
 export const Route = createFileRoute('/patterns/agents')({ component: App })
 
@@ -102,6 +102,108 @@ function App() {
                  <h4 className="font-semibold text-sm mb-1 text-[var(--text-primary)]">Directed (Stateful) Agents</h4>
                  <p className="text-xs text-[var(--text-secondary)]">Example: LangGraph. You define a state machine or graph. The agent moves between nodes (Reasoning, Coding, Testing). Much more reliable for production.</p>
                </div>
+            </div>
+          </section>
+
+          <section className="card p-6 sm:p-8">
+            <h2 className="section-title text-xl font-semibold text-[var(--text-primary)] mb-6">
+              Workflow Graph Examples
+            </h2>
+            
+            <div className="space-y-10">
+              {/* Trip Planning Agent */}
+              <div>
+                <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--accent-primary)] mb-4 flex items-center gap-2">
+                  <Plane size={16} />
+                  Trip Planning Agent (Cyclic Reasoning)
+                </h3>
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-[var(--bg-base)] border border-[var(--border)]">
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="status-badge status-badge-green p-3 rounded-xl border-2">
+                      <Target size={20} />
+                    </div>
+                    <span className="text-[10px] font-bold">Goal</span>
+                  </div>
+                  <ArrowRight className="hidden sm:block text-[var(--text-muted)]" size={16} />
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="status-badge status-badge-amber p-3 rounded-xl border-2">
+                      <Search size={20} />
+                    </div>
+                    <span className="text-[10px] font-bold">Flights</span>
+                  </div>
+                  <ArrowRight className="hidden sm:block text-[var(--text-muted)]" size={16} />
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="status-badge status-badge-amber p-3 rounded-xl border-2">
+                      <Hotel size={20} />
+                    </div>
+                    <span className="text-[10px] font-bold">Hotels</span>
+                  </div>
+                  <ArrowRight className="hidden sm:block text-[var(--text-muted)]" size={16} />
+                  <div className="flex flex-col items-center gap-2 text-center">
+                    <div className="status-badge status-badge-red p-3 rounded-xl border-2">
+                      <Repeat size={20} className="animate-pulse" />
+                    </div>
+                    <span className="text-[10px] font-bold">Conflict? <br/>(Re-plan)</span>
+                  </div>
+                  <ArrowRight className="hidden sm:block text-[var(--text-muted)]" size={16} />
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="status-badge status-badge-green p-3 rounded-xl border-2">
+                      <Map size={20} />
+                    </div>
+                    <span className="text-[10px] font-bold">Itinerary</span>
+                  </div>
+                </div>
+                <p className="mt-3 text-xs text-[var(--text-secondary)] italic">
+                  The agent checks flight vs hotel availability. If a hotel is booked, it loops back to find a new flight or date.
+                </p>
+              </div>
+
+              {/* Inventory Management Agent */}
+              <div>
+                <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--accent-secondary)] mb-4 flex items-center gap-2">
+                  <Box size={16} />
+                  Inventory Management Agent (Event-Driven)
+                </h3>
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-[var(--bg-base)] border border-[var(--border)]">
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="status-badge status-badge-amber p-3 rounded-xl border-2">
+                      <ShoppingCart size={20} />
+                    </div>
+                    <span className="text-[10px] font-bold">Order Recv</span>
+                  </div>
+                  <ArrowRight className="hidden sm:block text-[var(--text-muted)]" size={16} />
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="status-badge status-badge-green p-3 rounded-xl border-2">
+                      <Search size={20} />
+                    </div>
+                    <span className="text-[10px] font-bold">Check Stock</span>
+                  </div>
+                  <ArrowRight className="hidden sm:block text-[var(--text-muted)]" size={16} />
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="status-badge status-badge-red p-3 rounded-xl border-2">
+                      <AlertCircle size={20} />
+                    </div>
+                    <span className="text-[10px] font-bold">Low Stock?</span>
+                  </div>
+                  <ArrowRight className="hidden sm:block text-[var(--text-muted)]" size={16} />
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="status-badge status-badge-amber p-3 rounded-xl border-2">
+                      <Zap size={20} />
+                    </div>
+                    <span className="text-[10px] font-bold">Vendor Order</span>
+                  </div>
+                  <ArrowRight className="hidden sm:block text-[var(--text-muted)]" size={16} />
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="status-badge status-badge-green p-3 rounded-xl border-2">
+                      <CheckCircle2 size={20} />
+                    </div>
+                    <span className="text-[10px] font-bold">Updated</span>
+                  </div>
+                </div>
+                <p className="mt-3 text-xs text-[var(--text-secondary)] italic">
+                  An autonomous loop that monitors sales and triggers supply chain actions without human intervention.
+                </p>
+              </div>
             </div>
           </section>
         </div>

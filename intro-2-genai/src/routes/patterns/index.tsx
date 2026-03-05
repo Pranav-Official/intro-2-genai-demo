@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { ArrowLeft, Zap, Search, Wrench, Bot, Repeat } from 'lucide-react'
+import { ArrowLeft, Zap, Search, Wrench, Bot, Repeat, Share2 } from 'lucide-react'
 
 export const Route = createFileRoute('/patterns/')({ component: App })
 
@@ -11,6 +11,14 @@ const topics = [
       'Giving LLMs a memory. How to connect your private data to a model using vector databases.',
     icon: Search,
     href: '/patterns/rag',
+  },
+  {
+    id: 'graph-rag',
+    title: 'GraphRAG (Knowledge Graphs)',
+    description:
+      'Beyond simple text chunks. Using structured knowledge graphs to handle complex, global data relationships.',
+    icon: Share2,
+    href: '/patterns/graph-rag',
   },
   {
     id: 'tool-use',
