@@ -31,7 +31,7 @@ const sessions = [
     description:
       'LLM observability, evaluation frameworks, and deployment strategies for production systems.',
     icon: Cpu,
-    href: '#',
+    href: '/tooling',
     color: 'violet',
   },
   {

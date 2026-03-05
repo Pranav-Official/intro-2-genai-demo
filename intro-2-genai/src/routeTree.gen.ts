@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ToolingRouteImport } from './routes/tooling'
 import { Route as PatternsRouteImport } from './routes/patterns'
 import { Route as FoundationsRouteImport } from './routes/foundations'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ToolingIndexRouteImport } from './routes/tooling/index'
 import { Route as PatternsIndexRouteImport } from './routes/patterns/index'
 import { Route as FoundationsIndexRouteImport } from './routes/foundations/index'
+import { Route as ToolingSafetyRouteImport } from './routes/tooling/safety'
+import { Route as ToolingProvidersRouteImport } from './routes/tooling/providers'
+import { Route as ToolingObservabilityRouteImport } from './routes/tooling/observability'
+import { Route as ToolingNoCodeRouteImport } from './routes/tooling/no-code'
 import { Route as PatternsToolUseRouteImport } from './routes/patterns/tool-use'
 import { Route as PatternsRagRouteImport } from './routes/patterns/rag'
 import { Route as PatternsGraphRagRouteImport } from './routes/patterns/graph-rag'
@@ -24,6 +30,11 @@ import { Route as FoundationsPromptingRouteImport } from './routes/foundations/p
 import { Route as FoundationsNondetRouteImport } from './routes/foundations/nondet'
 import { Route as FoundationsBasicsRouteImport } from './routes/foundations/basics'
 
+const ToolingRoute = ToolingRouteImport.update({
+  id: '/tooling',
+  path: '/tooling',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PatternsRoute = PatternsRouteImport.update({
   id: '/patterns',
   path: '/patterns',
@@ -44,6 +55,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolingIndexRoute = ToolingIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ToolingRoute,
+} as any)
 const PatternsIndexRoute = PatternsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -53,6 +69,26 @@ const FoundationsIndexRoute = FoundationsIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => FoundationsRoute,
+} as any)
+const ToolingSafetyRoute = ToolingSafetyRouteImport.update({
+  id: '/safety',
+  path: '/safety',
+  getParentRoute: () => ToolingRoute,
+} as any)
+const ToolingProvidersRoute = ToolingProvidersRouteImport.update({
+  id: '/providers',
+  path: '/providers',
+  getParentRoute: () => ToolingRoute,
+} as any)
+const ToolingObservabilityRoute = ToolingObservabilityRouteImport.update({
+  id: '/observability',
+  path: '/observability',
+  getParentRoute: () => ToolingRoute,
+} as any)
+const ToolingNoCodeRoute = ToolingNoCodeRouteImport.update({
+  id: '/no-code',
+  path: '/no-code',
+  getParentRoute: () => ToolingRoute,
 } as any)
 const PatternsToolUseRoute = PatternsToolUseRouteImport.update({
   id: '/tool-use',
@@ -100,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/foundations': typeof FoundationsRouteWithChildren
   '/patterns': typeof PatternsRouteWithChildren
+  '/tooling': typeof ToolingRouteWithChildren
   '/foundations/basics': typeof FoundationsBasicsRoute
   '/foundations/nondet': typeof FoundationsNondetRoute
   '/foundations/prompting': typeof FoundationsPromptingRoute
@@ -108,8 +145,13 @@ export interface FileRoutesByFullPath {
   '/patterns/graph-rag': typeof PatternsGraphRagRoute
   '/patterns/rag': typeof PatternsRagRoute
   '/patterns/tool-use': typeof PatternsToolUseRoute
+  '/tooling/no-code': typeof ToolingNoCodeRoute
+  '/tooling/observability': typeof ToolingObservabilityRoute
+  '/tooling/providers': typeof ToolingProvidersRoute
+  '/tooling/safety': typeof ToolingSafetyRoute
   '/foundations/': typeof FoundationsIndexRoute
   '/patterns/': typeof PatternsIndexRoute
+  '/tooling/': typeof ToolingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -122,8 +164,13 @@ export interface FileRoutesByTo {
   '/patterns/graph-rag': typeof PatternsGraphRagRoute
   '/patterns/rag': typeof PatternsRagRoute
   '/patterns/tool-use': typeof PatternsToolUseRoute
+  '/tooling/no-code': typeof ToolingNoCodeRoute
+  '/tooling/observability': typeof ToolingObservabilityRoute
+  '/tooling/providers': typeof ToolingProvidersRoute
+  '/tooling/safety': typeof ToolingSafetyRoute
   '/foundations': typeof FoundationsIndexRoute
   '/patterns': typeof PatternsIndexRoute
+  '/tooling': typeof ToolingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -131,6 +178,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/foundations': typeof FoundationsRouteWithChildren
   '/patterns': typeof PatternsRouteWithChildren
+  '/tooling': typeof ToolingRouteWithChildren
   '/foundations/basics': typeof FoundationsBasicsRoute
   '/foundations/nondet': typeof FoundationsNondetRoute
   '/foundations/prompting': typeof FoundationsPromptingRoute
@@ -139,8 +187,13 @@ export interface FileRoutesById {
   '/patterns/graph-rag': typeof PatternsGraphRagRoute
   '/patterns/rag': typeof PatternsRagRoute
   '/patterns/tool-use': typeof PatternsToolUseRoute
+  '/tooling/no-code': typeof ToolingNoCodeRoute
+  '/tooling/observability': typeof ToolingObservabilityRoute
+  '/tooling/providers': typeof ToolingProvidersRoute
+  '/tooling/safety': typeof ToolingSafetyRoute
   '/foundations/': typeof FoundationsIndexRoute
   '/patterns/': typeof PatternsIndexRoute
+  '/tooling/': typeof ToolingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -149,6 +202,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/foundations'
     | '/patterns'
+    | '/tooling'
     | '/foundations/basics'
     | '/foundations/nondet'
     | '/foundations/prompting'
@@ -157,8 +211,13 @@ export interface FileRouteTypes {
     | '/patterns/graph-rag'
     | '/patterns/rag'
     | '/patterns/tool-use'
+    | '/tooling/no-code'
+    | '/tooling/observability'
+    | '/tooling/providers'
+    | '/tooling/safety'
     | '/foundations/'
     | '/patterns/'
+    | '/tooling/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -171,14 +230,20 @@ export interface FileRouteTypes {
     | '/patterns/graph-rag'
     | '/patterns/rag'
     | '/patterns/tool-use'
+    | '/tooling/no-code'
+    | '/tooling/observability'
+    | '/tooling/providers'
+    | '/tooling/safety'
     | '/foundations'
     | '/patterns'
+    | '/tooling'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/foundations'
     | '/patterns'
+    | '/tooling'
     | '/foundations/basics'
     | '/foundations/nondet'
     | '/foundations/prompting'
@@ -187,8 +252,13 @@ export interface FileRouteTypes {
     | '/patterns/graph-rag'
     | '/patterns/rag'
     | '/patterns/tool-use'
+    | '/tooling/no-code'
+    | '/tooling/observability'
+    | '/tooling/providers'
+    | '/tooling/safety'
     | '/foundations/'
     | '/patterns/'
+    | '/tooling/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -196,10 +266,18 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   FoundationsRoute: typeof FoundationsRouteWithChildren
   PatternsRoute: typeof PatternsRouteWithChildren
+  ToolingRoute: typeof ToolingRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tooling': {
+      id: '/tooling'
+      path: '/tooling'
+      fullPath: '/tooling'
+      preLoaderRoute: typeof ToolingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/patterns': {
       id: '/patterns'
       path: '/patterns'
@@ -228,6 +306,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tooling/': {
+      id: '/tooling/'
+      path: '/'
+      fullPath: '/tooling/'
+      preLoaderRoute: typeof ToolingIndexRouteImport
+      parentRoute: typeof ToolingRoute
+    }
     '/patterns/': {
       id: '/patterns/'
       path: '/'
@@ -241,6 +326,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/foundations/'
       preLoaderRoute: typeof FoundationsIndexRouteImport
       parentRoute: typeof FoundationsRoute
+    }
+    '/tooling/safety': {
+      id: '/tooling/safety'
+      path: '/safety'
+      fullPath: '/tooling/safety'
+      preLoaderRoute: typeof ToolingSafetyRouteImport
+      parentRoute: typeof ToolingRoute
+    }
+    '/tooling/providers': {
+      id: '/tooling/providers'
+      path: '/providers'
+      fullPath: '/tooling/providers'
+      preLoaderRoute: typeof ToolingProvidersRouteImport
+      parentRoute: typeof ToolingRoute
+    }
+    '/tooling/observability': {
+      id: '/tooling/observability'
+      path: '/observability'
+      fullPath: '/tooling/observability'
+      preLoaderRoute: typeof ToolingObservabilityRouteImport
+      parentRoute: typeof ToolingRoute
+    }
+    '/tooling/no-code': {
+      id: '/tooling/no-code'
+      path: '/no-code'
+      fullPath: '/tooling/no-code'
+      preLoaderRoute: typeof ToolingNoCodeRouteImport
+      parentRoute: typeof ToolingRoute
     }
     '/patterns/tool-use': {
       id: '/patterns/tool-use'
@@ -341,11 +454,31 @@ const PatternsRouteWithChildren = PatternsRoute._addFileChildren(
   PatternsRouteChildren,
 )
 
+interface ToolingRouteChildren {
+  ToolingNoCodeRoute: typeof ToolingNoCodeRoute
+  ToolingObservabilityRoute: typeof ToolingObservabilityRoute
+  ToolingProvidersRoute: typeof ToolingProvidersRoute
+  ToolingSafetyRoute: typeof ToolingSafetyRoute
+  ToolingIndexRoute: typeof ToolingIndexRoute
+}
+
+const ToolingRouteChildren: ToolingRouteChildren = {
+  ToolingNoCodeRoute: ToolingNoCodeRoute,
+  ToolingObservabilityRoute: ToolingObservabilityRoute,
+  ToolingProvidersRoute: ToolingProvidersRoute,
+  ToolingSafetyRoute: ToolingSafetyRoute,
+  ToolingIndexRoute: ToolingIndexRoute,
+}
+
+const ToolingRouteWithChildren =
+  ToolingRoute._addFileChildren(ToolingRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   FoundationsRoute: FoundationsRouteWithChildren,
   PatternsRoute: PatternsRouteWithChildren,
+  ToolingRoute: ToolingRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
