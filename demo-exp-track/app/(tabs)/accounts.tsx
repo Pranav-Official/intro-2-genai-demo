@@ -20,10 +20,12 @@ export default function AccountsScreen() {
   const router = useRouter();
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [totalBalance, setTotalBalance] = useState(0);
 
   const fetchAccounts = useCallback(async () => {
     const data = await getAccounts(db);
     setAccounts(data);
+    setTotalBalance(data.reduce((sum, acc) => sum + acc.balance, 0));
   }, [db]);
 
   useFocusEffect(
@@ -61,6 +63,12 @@ export default function AccountsScreen() {
       <FlatList
         data={accounts}
         keyExtractor={(item) => item.id.toString()}
+        ListHeaderComponent={
+          <View style={styles.headerCard}>
+            <Text style={styles.headerLabel}>Total Balance</Text>
+            <Text style={styles.headerAmount}>₹{totalBalance.toFixed(2)}</Text>
+          </View>
+        }
         renderItem={({ item }) => (
           <View style={styles.accountItem}>
             <View style={styles.accountIcon}>
@@ -77,7 +85,7 @@ export default function AccountsScreen() {
                 styles.balance,
                 { color: item.balance < 0 ? colors.expense : colors.income }
               ]}>
-                ${item.balance.toFixed(2)}
+                ₹{item.balance.toFixed(2)}
               </Text>
               <TouchableOpacity onPress={() => handleDelete(item.id, item.name)}>
                 <MaterialCommunityIcons name="delete-outline" size={20} color={colors.textSecondary} />
@@ -113,6 +121,25 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingBottom: 100,
+  },
+  headerCard: {
+    padding: spacing.xl,
+    backgroundColor: colors.background,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+    alignItems: 'center',
+  },
+  headerLabel: {
+    fontSize: fontSize.sm,
+    color: colors.textSecondary,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+  },
+  headerAmount: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: colors.text,
+    marginTop: spacing.xs,
   },
   accountItem: {
     flexDirection: 'row',
@@ -154,7 +181,7 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: 'absolute',
-    bottom: spacing.xl,
+    bottom: 110,
     right: spacing.xl,
     backgroundColor: colors.primary,
     width: 64,

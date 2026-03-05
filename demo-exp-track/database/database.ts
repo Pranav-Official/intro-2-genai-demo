@@ -171,6 +171,22 @@ export async function createTransaction(
   return result?.id ?? 0;
 }
 
+export async function deleteTransaction(db: SQLiteDatabase, id: number): Promise<void> {
+  const transaction = await db.getFirstAsync<{ amount: number; account_id: number }>(
+    'SELECT amount, account_id FROM transactions WHERE id = ?',
+    id
+  );
+  
+  if (transaction) {
+    // Reverse the amount in the account balance
+    await db.runAsync(
+      'UPDATE accounts SET balance = balance - ? WHERE id = ?',
+      transaction.amount, transaction.account_id
+    );
+    await db.runAsync('DELETE FROM transactions WHERE id = ?', id);
+  }
+}
+
 export async function deleteAccount(db: SQLiteDatabase, accountId: number): Promise<void> {
   await db.runAsync('DELETE FROM transactions WHERE account_id = ?', accountId);
   await db.runAsync('DELETE FROM accounts WHERE id = ?', accountId);

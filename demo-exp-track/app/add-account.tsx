@@ -62,7 +62,7 @@ export default function AddAccountScreen() {
               style={styles.input}
               value={balance}
               onChangeText={setBalance}
-              placeholder="0.00"
+              placeholder="₹0.00"
               placeholderTextColor={colors.textSecondary}
               keyboardType="numeric"
             />

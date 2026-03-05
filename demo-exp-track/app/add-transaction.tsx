@@ -12,6 +12,9 @@ import {
   Platform,
   Alert
 } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+
 import { colors, spacing, borderRadius, fontSize } from '@/constants/theme';
 import { 
   getAccounts, 
@@ -35,7 +38,9 @@ export default function AddTransactionScreen() {
   const [note, setNote] = useState('');
   const [accountId, setAccountId] = useState<number | null>(null);
   const [categoryId, setCategoryId] = useState<number | null>(null);
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
 
   useEffect(() => {
     async function loadData() {
@@ -65,8 +70,29 @@ export default function AddTransactionScreen() {
       return;
     }
 
-    await createTransaction(db, accountId, categoryId, numAmount, note.trim(), date);
+    await createTransaction(db, accountId, categoryId, numAmount, note.trim(), date.toISOString());
     router.back();
+  };
+
+  const onDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      const newDate = new Date(date);
+      newDate.setFullYear(selectedDate.getFullYear());
+      newDate.setMonth(selectedDate.getMonth());
+      newDate.setDate(selectedDate.getDate());
+      setDate(newDate);
+    }
+  };
+
+  const onTimeChange = (event: DateTimePickerEvent, selectedTime?: Date) => {
+    setShowTimePicker(false);
+    if (selectedTime) {
+      const newDate = new Date(date);
+      newDate.setHours(selectedTime.getHours());
+      newDate.setMinutes(selectedTime.getMinutes());
+      setDate(newDate);
+    }
   };
 
   return (
@@ -111,7 +137,7 @@ export default function AddTransactionScreen() {
               style={styles.amountInput}
               value={amount}
               onChangeText={setAmount}
-              placeholder="0.00"
+              placeholder="₹0.00"
               keyboardType="numeric"
               autoFocus
             />
@@ -155,21 +181,41 @@ export default function AddTransactionScreen() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Date</Text>
+            <Text style={styles.label}>Date & Time</Text>
             <View style={styles.dateSelector}>
               <TouchableOpacity 
-                style={[styles.dateChip, date === new Date().toISOString().split('T')[0] && styles.dateChipActive]}
-                onPress={() => setDate(new Date().toISOString().split('T')[0])}
+                style={styles.datePickerButton}
+                onPress={() => setShowDatePicker(true)}
               >
-                <Text style={[styles.dateChipText, date === new Date().toISOString().split('T')[0] && styles.dateChipTextActive]}>Today</Text>
+                <MaterialCommunityIcons name="calendar" size={20} color={colors.primary} />
+                <Text style={styles.datePickerButtonText}>
+                  {date.toLocaleDateString()}
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity 
-                style={[styles.dateChip, date === new Date(Date.now() - 86400000).toISOString().split('T')[0] && styles.dateChipActive]}
-                onPress={() => setDate(new Date(Date.now() - 86400000).toISOString().split('T')[0])}
+                style={styles.datePickerButton}
+                onPress={() => setShowTimePicker(true)}
               >
-                <Text style={[styles.dateChipText, date === new Date(Date.now() - 86400000).toISOString().split('T')[0] && styles.dateChipTextActive]}>Yesterday</Text>
+                <MaterialCommunityIcons name="clock-outline" size={20} color={colors.primary} />
+                <Text style={styles.datePickerButtonText}>
+                  {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </Text>
               </TouchableOpacity>
             </View>
+            {showDatePicker && (
+              <DateTimePicker
+                value={date}
+                mode="date"
+                onChange={onDateChange}
+              />
+            )}
+            {showTimePicker && (
+              <DateTimePicker
+                value={date}
+                mode="time"
+                onChange={onTimeChange}
+              />
+            )}
           </View>
 
           <View style={styles.inputGroup}>
@@ -197,7 +243,6 @@ export default function AddTransactionScreen() {
     </SafeAreaView>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -326,22 +371,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: spacing.sm,
   },
-  dateChip: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderRadius: borderRadius.full,
-    backgroundColor: '#F1F3F5',
+  datePickerButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    padding: spacing.md,
+    backgroundColor: '#F8F9FA',
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
-  dateChipActive: {
-    backgroundColor: colors.primaryDark,
-  },
-  dateChipText: {
+  datePickerButtonText: {
     fontSize: fontSize.sm,
     color: colors.text,
-  },
-  dateChipTextActive: {
-    color: colors.white,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   noteInput: {
     backgroundColor: '#F8F9FA',
